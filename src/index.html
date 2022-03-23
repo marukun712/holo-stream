@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="https://yt3.ggpht.com/a/AGF-l78roMKQjt4568VGVjmLkiOJ-25H9BxD_GH6QA=s256">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <title>holo-stream-radio</title>
+    <link rel="stylesheet" href="/src/nav.css">
+
+</head>
+
+<body>
+    <nav class="flex items-center justify-between flex-wrap bg-teal p-6">
+        <div class="flex items-center flex-no-shrink text-white mr-6">
+            <img src="https://yt3.ggpht.com/a/AGF-l78roMKQjt4568VGVjmLkiOJ-25H9BxD_GH6QA=s256" width="54" height="54"> <span class="font-semibold text-xl tracking-tight">holo-stream-radio</span>
+        </div>
+        <div class="block lg:hidden">
+            <button class="flex items-center px-3 py-2 border rounded text-teal-lighter border-teal-light hover:text-white hover:border-white">
+            <svg class="h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+          </button>
+        </div>
+        <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+            <div class="text-sm lg:flex-grow">
+                <a href="https://marukunserver.ml/marukun-music/src/html/index.html" class="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter text-white mr-4">
+              Home
+            </a>
+                <a href="https://marukunserver.ml/marukun-music/src/html/livestream.html" class="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter text-white mr-4">
+              Livestream
+            </a>
+                <a href="https://marukunserver.ml/marukun-music/src/html/stream.html" class="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter text-white">
+            streaming
+            </a>
+            </div>
+            <div>
+                <a href="https://github.com/marukun712/holo-stream" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0">Github</a>
+            </div>
+        </div>
+    </nav>
+
+    <button onclick="onsound();" style="background-color: white; padding: 1vw;"><h1>onsound</h1></button>
+    <button onclick="offsound();" style="background-color: white; padding: 1vw;"><h1>offsound</h1></button>
+    <button onclick="onvideo();" style="background-color: white; padding: 1vw;"><h1>onvideo</h1></button>
+    <button onclick="offvideo();" style="background-color: white; padding: 1vw;"><h1>offvideo</h1></button>
+
+    <div class="playing" style="position: sticky;  top: 100vh;">
+        <img src="https://media4.giphy.com/media/0E5xG8yTto5uECr4wY/giphy.gif">
+    </div>
+
+    </div>
+    <div class="overlay">
+    </div>
+    <div id="yt_player"></div>
+
+
+
+    <script src="/src/index.js">
+    </script>
+    <script>
+        function offvideo() {
+            document.getElementById('yt_player').setAttribute('style', 'display: none;')
+
+            var $WIN = $(window); // ブラウザのウインドウを取得する
+
+            function screen_fit() {
+                // 上下左右の縦横比を調節する関数
+                const WIN_H = $WIN.height(); // windowの高さを取得
+                const WIN_W = $WIN.width(); // windowの幅を取得
+                const screen_switch = 0.5625; // youtubeの縦横比16:9=>9/16した値
+                const screen_ratio = WIN_H / WIN_W; // windowの高さの値/windowの幅の値
+                const ratio_H = WIN_H / screen_switch; // windowの高さ/縦横比の値
+                const ratio_W = WIN_W * screen_switch; // windowの幅*縦横比の値
+
+                if (screen_ratio > screen_switch) {
+                    // windowの高さの値/windowの幅の値>youtubeの縦横比16:9=>9/16した値
+                    $("#yt_player").css({ //動画を入れる場所のid名入れる
+                        height: "100%",
+                        width: ratio_H,
+                        "margin-top": "0",
+                        "margin-left": -ratio_H / 2,
+                        left: "50%",
+                        top: "0"
+                    });
+                } else {
+                    $("#yt_player").css({ //APIの場所のid名入れる
+                        width: "100%",
+                        height: ratio_W,
+                        "margin-top": -ratio_W / 2,
+                        "margin-left": "0",
+                        top: "50%",
+                        left: "0"
+                    });
+                }
+            }
+
+            $WIN.on("resize", function() {
+                screen_fit();
+            });
+
+            $(function() {
+                screen_fit();
+            });
+        }
+
+        function onvideo() {
+            document.getElementById('yt_player').removeAttribute('style', 'display: none;')
+            var $WIN = $(window); // ブラウザのウインドウを取得する
+
+            function screen_fit() {
+                // 上下左右の縦横比を調節する関数
+                const WIN_H = $WIN.height(); // windowの高さを取得
+                const WIN_W = $WIN.width(); // windowの幅を取得
+                const screen_switch = 0.5625; // youtubeの縦横比16:9=>9/16した値
+                const screen_ratio = WIN_H / WIN_W; // windowの高さの値/windowの幅の値
+                const ratio_H = WIN_H / screen_switch; // windowの高さ/縦横比の値
+                const ratio_W = WIN_W * screen_switch; // windowの幅*縦横比の値
+
+                if (screen_ratio > screen_switch) {
+                    // windowの高さの値/windowの幅の値>youtubeの縦横比16:9=>9/16した値
+                    $("#yt_player").css({ //動画を入れる場所のid名入れる
+                        height: "100%",
+                        width: ratio_H,
+                        "margin-top": "0",
+                        "margin-left": -ratio_H / 2,
+                        left: "50%",
+                        top: "0"
+                    });
+                } else {
+                    $("#yt_player").css({ //APIの場所のid名入れる
+                        width: "100%",
+                        height: ratio_W,
+                        "margin-top": -ratio_W / 2,
+                        "margin-left": "0",
+                        top: "50%",
+                        left: "0"
+                    });
+                }
+            }
+
+            $WIN.on("resize", function() {
+                screen_fit();
+            });
+
+            $(function() {
+                screen_fit();
+            });
+
+        }
+    </script>
+</body>
+
+</html>
