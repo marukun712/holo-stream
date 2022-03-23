@@ -36,7 +36,7 @@
     }
     
     body {
-        background-image: url(http://marukunserver.ml:2000/src/img/holo.jpg);
+        background-image: url(http://marukunserver.ml:2000/holo-radio/src/img/holo.jpg);
         background-size: cover;
         background-repeat: no-repeat;
         z-index: 1;
@@ -44,7 +44,7 @@
     
     @media screen and (max-width: 480px) {
         body {
-            background-image: url(http://marukunserver.ml:2000/src/img/phone.jpg);
+            background-image: url(http://marukunserver.ml:2000/holo-radio/src/img/phone.jpg);
             background-size: 100vh;
             background-repeat: no-repeat;
             z-index: 1;
